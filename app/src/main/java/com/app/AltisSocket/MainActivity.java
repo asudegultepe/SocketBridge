@@ -8,7 +8,6 @@ import androidx.preference.PreferenceManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView t1;
 
     TextView mIP;
-    TextView mPort;
+    TextView mPortClient;
 
     Button settingsBtn;
     static TextView textView;
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         t1 = (TextView) findViewById(R.id.textView1);
 
         mIP = (TextView) findViewById(R.id.ipAddress_MA);
-        mPort = (TextView) findViewById(R.id.port_MA);
+        mPortClient = (TextView) findViewById(R.id.port_MA);
         settingsBtn = (Button) findViewById(R.id.idBtnSettings);
 
 
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         String ip_address = mPreferences.getString(getString(R.string.ip_address), "");
         mIP.setText(ip_address);
         String port_input = mPreferences.getString(getString(R.string.port_input), "");
-        mPort.setText(port_input);
+        mPortClient.setText(port_input);
 
         // Settings Page
         settingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -82,31 +81,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Service Android
+        // MessageSender Thread
         Thread myThread = new Thread(new MyServerThread());
         myThread.start();
-
-        textView = findViewById(R.id.textView2);
-        Button button1 = findViewById(R.id.button1);
-        Button button2 = findViewById(R.id.button2);
-
-        textView.setText("Current Time: " + new Date());
-
-        Intent intent = new Intent(MainActivity.this, MyService.class);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startService(intent);
-                notificationManagerCompat.notify(1, notification);
-            }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopService(intent);
-            }
-        });
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
@@ -200,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void send(View v) {
         MessageSender messageSender = new MessageSender();
-        messageSender.execute(e1.getText().toString(), mIP.getText().toString(), mPort.getText().toString());
+        messageSender.execute(e1.getText().toString(), mIP.getText().toString(), mPortClient.getText().toString());
     }
 
     public void clear(View v) {
@@ -209,27 +186,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void apiCall() {
 
-        new AsyncCaller().execute(mIP.getText().toString(), mPort.getText().toString());
+        new AsyncCaller().execute(mIP.getText().toString(), mPortClient.getText().toString());
+        notificationManagerCompat.notify(1, notification);
 
     }
 
     private class AsyncCaller extends AsyncTask<String, Void, Void>
     {
-        ProgressDialog pdLoading = new ProgressDialog(MainActivity.this);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tLoading...");
-            pdLoading.show();
-        }
         @Override
         protected Void doInBackground(String... params) {
 
-            //this method will be running on background thread so don't update UI frome here
-            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+            //this method will be running on background thread so don't update UI frame here
+            //do your long running http tasks here,you don't want to pass argument and u can access the parent class' variable url over here
 
             String ipAddress = params[0];
             Integer port = Integer.valueOf(params[1]);
@@ -245,15 +213,6 @@ public class MainActivity extends AppCompatActivity {
             new Thread(new StreamBridge(hostServer, atop)).start(); // from wifi to serial
 
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            //this method will be running on UI thread
-
-            pdLoading.dismiss();
         }
 
     }

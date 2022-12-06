@@ -4,122 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#333366"
     tools:context="com.app.AltisSocket.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="25dp">
+        android:layout_marginStart="10dp">
 
         <Button
             android:id="@+id/idBtnSettings"
             android:layout_width="53dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#333366"
             android:drawableRight="@drawable/ic_settings" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="Hello World!"
-            android:layout_marginTop="55dp" />
-
-        <LinearLayout
-            android:id="@+id/LinerLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_below="@id/textView2">
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="START"
-                android:layout_marginRight="10dp"/>
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="STOP"
-                android:layout_marginRight="10dp"/>
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BRIDGE" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/ipAddress_MA"
+        <Button
+            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:layout_below="@id/LinerLayout2"/>
+            android:layout_centerHorizontal="true"
+            android:text="BRIDGE" />
 
-        <TextView
-            android:id="@+id/port_MA"
-            android:layout_width="wrap_content"
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/altis_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/ipAddress_MA"
-            android:layout_marginTop="100dp"
-            android:layout_below="@id/LinerLayout2"/>
+            android:layout_marginTop="600dp"
+            android:columnCount="3"
+            android:rowCount="3">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:ems="10"
-            android:hint="Message"
-            android:layout_below="@+id/port_MA" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText"
-            android:onClick="send"
-            android:text="SEND" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/button"
-            android:onClick="clear"
-            android:text="CLEAR" />
-
-        <ScrollView
-            android:id="@+id/ScrollView"
-            android:layout_width="327dp"
-            android:layout_height="248dp"
-            android:layout_marginBottom="30dp"
-            android:layout_below="@+id/button">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/ipAddress_MA"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_row="1"
+                android:layout_column="0"/>
 
-                <TextView
-                    android:id="@+id/textView1"
+            <TextView
+                android:id="@+id/port_MA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"/>
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="7"
+                android:hint="Message"
+                android:layout_row="2"
+                android:layout_column="0"/>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="send"
+                android:text="SEND" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clear"
+                android:text="CLEAR" />
+
+            <ScrollView
+                android:id="@+id/ScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="439dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </ScrollView>
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
+                </LinearLayout>
+            </ScrollView>
+        </GridLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

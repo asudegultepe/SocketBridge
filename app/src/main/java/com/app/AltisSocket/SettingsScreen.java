@@ -20,7 +20,8 @@ public class SettingsScreen extends AppCompatActivity {
     SharedPreferences mPreferences;
     SharedPreferences.Editor mEditor;
     EditText mIP;
-    EditText mPort;
+    EditText mPortClient;
+
 
     Button back;
 
@@ -31,7 +32,7 @@ public class SettingsScreen extends AppCompatActivity {
 
         // Shared Preferences
         mIP = (EditText) findViewById(R.id.ipAddress);
-        mPort = (EditText) findViewById(R.id.port);
+        mPortClient = (EditText) findViewById(R.id.port);
         saveData = (Button) findViewById(R.id.save_prenferences);
         back = (Button) findViewById(R.id.back_button);
 
@@ -48,7 +49,7 @@ public class SettingsScreen extends AppCompatActivity {
                 mEditor.putString(getString(R.string.ip_address), ip_address);
                 mEditor.commit();
                 // Save Port
-                String port_input = mPort.getText().toString();
+                String port_input = mPortClient.getText().toString();
                 mEditor.putString(getString(R.string.port_input), port_input);
                 mEditor.commit();
 
@@ -71,7 +72,7 @@ public class SettingsScreen extends AppCompatActivity {
         String port_input = mPreferences.getString(getString(R.string.port_input), "");
 
         mIP.setText(ip_address);
-        mPort.setText(port_input);
+        mPortClient.setText(port_input);
     }
 
     }
