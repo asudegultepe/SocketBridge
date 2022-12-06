@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             Integer port = Integer.valueOf(params[1]);
 
             SocketClient atop = new SocketClient( ipAddress, port );
-            SocketServer hostServer = new SocketServer(4661);
+            SocketServer hostServer = new SocketServer(4660);
 
             System.out.println("Socket started.");
 
