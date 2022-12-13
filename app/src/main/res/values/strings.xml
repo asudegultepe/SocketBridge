@@ -19,5 +19,12 @@
 
     <string name="ip_address">AltisSocket.ip_address</string>
     <string name="port_input">AltisSocket.port_input</string>
+    <string name="port_device">AltisSocket.port_device</string>
+    <string name="p2l_ip">P2L Gateway IP Address: </string>
+    <string name="p2l_port">P2L Gateway Port: </string>
+    <string name="ip_address_hint">IP Address</string>
+    <string name="save">Save</string>
+    <string name="device_port">Device Port:</string>
+    <string name="device_port_title">Device Port</string>
 
 </resources>

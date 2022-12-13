@@ -18,7 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 
-public class SocketClient implements Runnable, DataStream {
+public class SocketClient implements Runnable, DataStream  {
 
 	ByteBuffer bufferIn;
 	ByteBuffer bufferOut;

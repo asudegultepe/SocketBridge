@@ -1,68 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:id="@+id/grid"
+        android:columnCount="1"
+        android:rowCount="4">
 
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_arrow_back"
-            android:textSize="10sp" />
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/p2l_ip"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/LinerLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
 
             <EditText
                 android:id="@+id/ipAddress"
                 android:layout_width="156dp"
                 android:layout_height="42dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="175dp"
-                android:ems="10"
-                android:hint="IP Address" />
+                android:ems="20"
+                android:hint="@string/ip_address_hint" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line" />
+
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp">
 
             <TextView
-                android:layout_width="34dp"
-                android:layout_height="42dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="175dp"
-                android:layout_toRightOf="@id/ipAddress"
-                android:text=":"
-                android:textSize="20sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/p2l_port"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PortLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
 
             <EditText
                 android:id="@+id/port"
                 android:layout_width="104dp"
                 android:layout_height="42dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="175dp"
-                android:layout_toRightOf="@id/ipAddress"
-                android:ems="10"
+                android:ems="20"
                 android:hint="Port" />
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/save_prenferences"
-            android:layout_width="72dp"
-            android:layout_height="46dp"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:text="Save"
-            android:layout_below="@id/LinerLayout"
-            android:layout_marginTop="55dp"
-            />
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line" />
+
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device_port_title"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+
+            <EditText
+                android:id="@+id/device_port"
+                android:layout_width="104dp"
+                android:layout_height="42dp"
+                android:ems="20"
+                android:hint="Port" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/save_prenferences"
+        android:layout_width="72dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/save"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/grid"/>
+
+</RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

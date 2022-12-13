@@ -18,10 +18,12 @@ import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.widget.ToggleButton;
 
 import com.app.p2lbridge.bridge.StreamBridge;
 import com.app.p2lbridge.sockets.SocketClient;
@@ -32,45 +34,56 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import AltisSocket.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    // TODO: Text view Scroll view output
+    // TODO: Stop Thread
 
     EditText e1;
     static TextView t1;
 
     TextView mIP;
     TextView mPortClient;
+    TextView mPortDevice;
 
     Button settingsBtn;
     static TextView textView;
 
+    ToggleButton toggleButton;
+
     NotificationManagerCompat notificationManagerCompat;
     Notification notification;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        e1 = (EditText) findViewById(R.id.editText);
         t1 = (TextView) findViewById(R.id.textView1);
 
         mIP = (TextView) findViewById(R.id.ipAddress_MA);
         mPortClient = (TextView) findViewById(R.id.port_MA);
+        mPortDevice = (TextView) findViewById(R.id.device_port_MA); //device_port
         settingsBtn = (Button) findViewById(R.id.idBtnSettings);
 
 
         // Get IP and Port info
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = mPreferences.edit();
+        // SharedPreferences.Editor editor = mPreferences.edit();
 
         String ip_address = mPreferences.getString(getString(R.string.ip_address), "");
         mIP.setText(ip_address);
         String port_input = mPreferences.getString(getString(R.string.port_input), "");
         mPortClient.setText(port_input);
+        String port_device = mPreferences.getString(getString(R.string.port_device), "");
+        mPortDevice.setText(port_device);
 
         // Settings Page
         settingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,17 +122,27 @@ public class MainActivity extends AppCompatActivity {
         notification = builder.build();
         notificationManagerCompat = NotificationManagerCompat.from(this);
 
-        Button button4 = findViewById(R.id.button4);
-        button4.setOnClickListener(new View.OnClickListener() {
+        toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                apiCall();
-                System.out.println("hello");
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(toggleButton.isChecked()){
+                    new BridgeService().run();
+                    notificationManagerCompat.notify(1, notification);
+                    System.out.println("Started.");
+                    t1.setText("Started.");
+                }
+                else {
+                    new BridgeService().bridge1.interrupt();
+                    new BridgeService().bridge2.interrupt();
+                    System.out.println("Stopped.");
+                    t1.setText("Stopped.");
+                }
             }
         });
-
-
     }
+
 
     class MyServerThread implements Runnable {
         Socket s;
@@ -175,46 +198,34 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void send(View v) {
-        MessageSender messageSender = new MessageSender();
-        messageSender.execute(e1.getText().toString(), mIP.getText().toString(), mPortClient.getText().toString());
-    }
+    class BridgeService implements Runnable {
 
-    public void clear(View v) {
-        t1.setText("");
-    }
+        String ipAddress = mIP.getText().toString();
+        Integer port = Integer.valueOf(mPortClient.getText().toString());
+        Integer port_device = Integer.valueOf(mPortDevice.getText().toString());
 
-    private void apiCall() {
+        SocketClient atop = new SocketClient(ipAddress, port);
+        SocketServer hostServer = new SocketServer(port_device);
 
-        new AsyncCaller().execute(mIP.getText().toString(), mPortClient.getText().toString());
-        notificationManagerCompat.notify(1, notification);
+        Thread hostBridge = new Thread(hostServer); // start the server on a separate thread
+        Thread atopBridge = new Thread(atop);
+        Thread bridge1 = new Thread(new StreamBridge(atop, hostServer));
+        Thread bridge2 = new Thread(new StreamBridge(hostServer, atop));
 
-    }
-
-    private class AsyncCaller extends AsyncTask<String, Void, Void>
-    {
         @Override
-        protected Void doInBackground(String... params) {
+        public void run() {
 
-            //this method will be running on background thread so don't update UI frame here
-            //do your long running http tasks here,you don't want to pass argument and u can access the parent class' variable url over here
+            if(!Thread.interrupted()){
+                System.out.println("Socket started.");
 
-            String ipAddress = params[0];
-            Integer port = Integer.valueOf(params[1]);
+                hostBridge.start();
+                atopBridge.start();
 
-            SocketClient atop = new SocketClient( ipAddress, port );
-            SocketServer hostServer = new SocketServer(4660);
+                bridge1.start(); // from serial to wifi
+                bridge2.start(); // from wifi to serial
+            }
 
-            System.out.println("Socket started.");
-
-            new Thread(hostServer).start(); // start the server on a separate thread
-            new Thread(atop).start();
-            new Thread(new StreamBridge(atop, hostServer)).start(); // from serial to wifi
-            new Thread(new StreamBridge(hostServer, atop)).start(); // from wifi to serial
-
-            return null;
         }
-
     }
 
 }
